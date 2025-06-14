@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Calendar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                }
+            },
+            plugins: [
+                // Required for form-checkbox styling if not using a full build
+                function({ addUtilities }) {
+                    addUtilities({
+                        '.form-checkbox': {
+                            '@apply appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-indigo-600 checked:border-indigo-600 focus:outline-none transition-all duration-200': {},
+                            '&:checked::before': {
+                                content: '""',
+                                '@apply block w-2 h-2 text-white': {},
+                                'background-image': `url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 00-1.414-1.414L5 9.009 5 9.009a1 1 0 00-.001 1.415l-.001.001 5.793 5.793a1 1 0 001.414-1.414L7.414 8.207 12.207 4.793z'/%3e%3c/svg%3e")`,
+                                'background-size': '100% 100%',
+                                'background-repeat': 'no-repeat',
+                                'background-position': 'center',
+                            },
+                        }
+                    });
+                }
+            ]
+        }
+    </script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- React and ReactDOM CDNs -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Base styles for the day cards for web view */
+        .day-card-web-layout {
+            /* Tailwind equivalent classes for responsive layout */
+            /* w-full for small, w-1/2 for md, w-1/3 for lg, w-1/4 for xl */
+            flex: 0 0 auto; /* Don't grow, don't shrink, base on content */
+            width: 100%; /* Default for small screens */
+            padding: 0.5rem; /* Equivalent to p-2 */
+            box-sizing: border-box; /* Include padding and border in width */
+        }
+        @media (min-width: 768px) { /* md breakpoint */
+            .day-card-web-layout {
+                width: 50%; /* 2 per row */
+            }
+        }
+        @media (min-width: 1024px) { /* lg breakpoint */
+            .day-card-web-layout {
+                width: 33.333333%; /* 3 per row */
+            }
+        }
+        @media (min-width: 1280px) { /* xl breakpoint */
+            .day-card-web-layout {
+                width: 25%; /* 4 per row */
+            }
+        }
+        /* Override default negative margin from -m-2 to create actual gutters on web */
+        .web-container-gutters {
+            margin: -0.5rem; /* Matches p-2 (0.5rem) from day-card-web-layout to create consistent gutters */
+        }
+
+        /* Print-specific styles */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: #fff !important; /* Ensure white background for print */
+            }
+            @page {
+                size: landscape; /* 11in x 8.5in */
+                margin: 0.5in; /* 0.5in margins on all sides (top, right, bottom, left) */
+            }
+
+            /* Hide elements not needed in print */
+            .no-print, .print\:hidden {
+                display: none !important;
+            }
+
+            /* Main container for print - use block to handle floats */
+            .print-container {
+                display: block !important; /* Override flex for print */
+                width: 100%; /* Full width within page margins */
+                padding: 0 !important;
+                margin: 0 !important;
+                box-sizing: border-box;
+                overflow: hidden; /* Clear floats */
+            }
+
+            /* Day card adjustments for print */
+            .day-card-for-print {
+                float: left !important; /* Force side-by-side */
+                flex-shrink: 0 !important; /* Prevent shrinking */
+                flex-grow: 0 !important; /* Prevent growing */
+                /* Doubled the width from 2.2in to 4.4in for two columns, then adjust margins.
+                   For 2 columns, we need 1 gutter. Let's make it 0.5in.
+                   Remaining width for 2 cards: 10in - 0.5in = 9.5in.
+                   Width per card: 9.5in / 2 = 4.75in. */
+                width: 4.75in !important; /* Doubled width for 2 columns per row */
+                margin-right: 0.25in !important; /* Half of 0.5in gutter to the right */
+                margin-left: 0.25in !important; /* Half of 0.5in gutter to the left */
+                margin-bottom: 0.4in !important; /* Vertical spacing between rows */
+                padding: 0.2in !important; /* Internal padding within each card */
+                box-sizing: border-box !important;
+                border: 1px solid #a5b4fc !important;
+                border-radius: 0.25rem !important;
+                box-shadow: none !important;
+                page-break-inside: avoid !important; /* Prevent breaking a card across pages */
+            }
+
+            /* Remove left margin for the first card in each row to align with page edge */
+            .day-card-for-print:nth-child(2n + 1) { /* Changed to 2n+1 for 2 columns */
+                clear: left !important; /* Start a new row */
+                margin-left: 0 !important;
+            }
+
+            /* Remove right margin for the last card in each row to align with page edge */
+            .day-card-for-print:nth-child(2n) { /* Changed to 2n for 2 columns */
+                margin-right: 0 !important;
+            }
+
+            /* Force a page break after the 2nd card (to get 2 per row)
+               and after the 4th card (to get a new page after 4 days total) */
+            .day-card-for-print:nth-child(2),
+            .day-card-for-print:nth-child(4) {
+                page-break-after: always !important;
+            }
+
+
+            /* Ensure internal elements for print */
+            h3, h4 {
+                font-size: 1.1em !important; /* Slightly larger heading for readability */
+            }
+            label, input, p {
+                font-size: 0.85em !important; /* Slightly smaller body text for density */
+            }
+            input[type="text"] {
+                min-height: 0.4in !important; /* Ensure fill-in lines have enough space */
+            }
+
+            input[type="text"], input[type="checkbox"] {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                background-color: transparent !important;
+                border: 1px solid #ccc !important;
+            }
+            input[type="checkbox"] {
+                border-color: #6366f1 !important;
+            }
+            input[type="text"] {
+                border-bottom: 1px dashed #999 !important;
+                border-top: none !important;
+                border-left: none !important;
+                border-right: none !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                outline: none !important;
+            }
+            .shadow-lg, .shadow-sm {
+                box-shadow: none !important;
+            }
+            .border-2 {
+                border-width: 1px !important;
+                border-color: #a5b4fc !important;
+            }
+            .border-b-2, .border-t-2 {
+                border-width: 1px !important;
+                border-color: #c7d2fe !important;
+            }
+            ::-webkit-scrollbar {
+                display: none !important;
+            }
+            html, body {
+                overflow: hidden !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Main App component
+        const App = () => {
+            // Helper function to format dates
+            const formatDate = (date) => {
+                return new Intl.DateTimeFormat('en-US', {
+                    month: 'long',
+                    day: 'numeric'
+                }).format(date);
+            };
+
+            // Initialize calendar data
+            const initialCalendarData = () => {
+                const data = {};
+                const startDate = new Date('2025-06-14T00:00:00'); // Start on Saturday, June 14th, 2025
+
+                for (let i = 0; i < 7; i++) {
+                    const currentDate = new Date(startDate);
+                    currentDate.setDate(startDate.getDate() + i);
+                    const dayKey = currentDate.getDay(); // 0 for Sunday, 6 for Saturday
+                    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                    const dateString = formatDate(currentDate);
+                    const dayOfWeek = dayNames[currentDate.getDay()]; // Get day name based on current date's day of week
+
+                    data[dateString] = {
+                        dayOfWeek: dayOfWeek,
+                        topTasks: {
+                            'Clean kitchen': false,
+                            'Water outside flower pots unless it rains': false,
+                        },
+                        rileyTasks: [],
+                        henryTasks: [],
+                        bottomTasks: {
+                            'Load and run dishwasher': false,
+                            'Clean counters and stove': false,
+                            'Outside lights out': false,
+                            'Don\'t lock each other out': false,
+                        },
+                        notes: [],
+                    };
+                }
+
+                // Add specific entries
+                // Saturday, June 14th
+                if (data['June 14']) {
+                    // Removed 'Feed Louis' and 'Unload dishwasher' for Saturday
+                    data['June 14'].rileyTasks.push('Work: 3pm - 10pm (staying in Windham)');
+                    data['June 14'].henryTasks.push('Check in on Gma about mass');
+                }
+
+                // Sunday, June 15th
+                if (data['June 15']) {
+                    data['June 15'].rileyTasks.push('Work: 6am - 6pm (EMT)');
+                    data['June 15'].notes.push('Mass w/Gma 8:45am');
+                }
+
+                // Monday, June 16th
+                if (data['June 16']) {
+                    data['June 16'].rileyTasks.push('Haircut: 5pm');
+                    data['June 16'].rileyTasks.push('Hiking (morning)');
+                    data['June 16'].henryTasks.push('Exam: Stats Final');
+                    data['June 16'].henryTasks.push('Baseball game (afternoon)'); // Added Henry's game
+                    data['June 16'].henryTasks.push('Collect and take out garbage');
+                }
+
+                // Tuesday, June 17th
+                if (data['June 17']) {
+                    data['June 17'].henryTasks.push('Exam: DCC Final');
+                    data['June 17'].henryTasks.push('Bring in trash cans from the road');
+                }
+
+                // Wednesday, June 18th
+                // No specific new tasks for Wednesday from prompt
+
+                // Thursday, June 19th
+                if (data['June 19']) {
+                    data['June 19'].rileyTasks.push('Work: 3pm - 8pm');
+                }
+
+                // Friday, June 20th
+                if (data['June 20']) {
+                    data['June 20'].rileyTasks.push('Work: 3pm - 10pm');
+                    data['June 20'].notes.push('Mom and Dad return home!');
+                    data['June 20'].notes.push('Flight to New York Kennedy (AA 235) - 7:35 AM – 4:59 PM');
+                    data['June 20'].notes.push('ETA home 8:00 PM');
+                }
+
+                return data;
+            };
+
+            const [calendarData, setCalendarData] = useState(initialCalendarData);
+
+            // Handles checkbox changes
+            const handleCheckboxChange = (day, type, task) => {
+                setCalendarData(prevData => ({
+                    ...prevData,
+                    [day]: {
+                        ...prevData[day],
+                        [type]: {
+                            ...prevData[day][type],
+                            [task]: !prevData[day][type][task],
+                        },
+                    },
+                }));
+            };
+
+            // Handles changes to editable tasks (Riley/Henry's items)
+            const handleTaskChange = (day, person, index, value) => {
+                setCalendarData(prevData => {
+                    const updatedTasks = [...prevData[day][person]];
+                    updatedTasks[index] = value;
+                    return {
+                        ...prevData,
+                        [day]: {
+                            ...prevData[day],
+                            [person]: updatedTasks,
+                        },
+                    };
+                });
+            };
+
+            // Adds a new task item for Riley or Henry
+            const handleAddTask = (day, person) => {
+                setCalendarData(prevData => ({
+                    ...prevData,
+                    [day]: {
+                        ...prevData[day],
+                        [person]: [...prevData[day][person], ''], // Add an empty string for a new editable item
+                    },
+                }));
+            };
+
+            // Component for a single day's card
+            const DayCard = ({ date, data, handleCheckboxChange, handleTaskChange, handleAddTask }) => {
+                return (
+                    // Apply different classes for web display vs print display
+                    <div className="day-card-web-layout day-card-for-print">
+                        <div className="bg-white rounded-lg shadow-lg p-4 h-full flex flex-col justify-between border-2 border-indigo-200">
+                            <div>
+                                <h3 className="text-xl font-semibold text-indigo-700 mb-2 border-b-2 border-indigo-200 pb-2">
+                                    {data.dayOfWeek}, {date}
+                                </h3>
+
+                                {/* Special notes for the day */}
+                                {data.notes && data.notes.length > 0 && (
+                                    <div className="mb-3 p-2 bg-indigo-50 text-indigo-800 rounded-md">
+                                        {data.notes.map((note, index) => (
+                                            <p key={index} className="text-sm font-medium">{note}</p>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Top Checkboxes */}
+                                <div className="mb-4">
+                                    <h4 className="text-md font-medium text-gray-700 mb-1">Morning Tasks:</h4>
+                                    {Object.entries(data.topTasks).map(([task, checked]) => (
+                                        <label key={task} className="flex items-center text-sm text-gray-800 mb-1 cursor-pointer">
+                                            <input
+                                                type="checkbox"
+                                                checked={checked}
+                                                onChange={() => handleCheckboxChange(date, 'topTasks', task)}
+                                                className="form-checkbox h-4 w-4 text-indigo-600 rounded mr-2"
+                                            />
+                                            {task}
+                                        </label>
+                                    ))}
+                                </div>
+
+                                {/* Riley's Section */}
+                                <div className="mb-4">
+                                    <h4 className="text-md font-medium text-gray-700 mb-1 flex justify-between items-center">
+                                        Riley's Day:
+                                        <button
+                                            onClick={() => handleAddTask(date, 'rileyTasks')}
+                                            className="bg-indigo-500 hover:bg-indigo-600 text-white text-xs px-3 py-1 rounded-full shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 print:hidden"
+                                        >
+                                            Add Item
+                                        </button>
+                                    </h4>
+                                    {data.rileyTasks.map((task, index) => (
+                                        <input
+                                            key={index}
+                                            type="text"
+                                            value={task}
+                                            onChange={(e) => handleTaskChange(date, 'rileyTasks', index, e.target.value)}
+                                            placeholder="Add Riley's activity..."
+                                            className="w-full p-2 border border-gray-300 rounded-md text-sm mb-1 focus:ring-indigo-500 focus:border-indigo-500"
+                                        />
+                                    ))}
+                                    {data.rileyTasks.length === 0 && (
+                                        <p className="text-sm text-gray-500 italic">No tasks for Riley yet.</p>
+                                    )}
+                                </div>
+
+                                {/* Henry's Section */}
+                                <div className="mb-4">
+                                    <h4 className="text-md font-medium text-gray-700 mb-1 flex justify-between items-center">
+                                        Henry's Day:
+                                        <button
+                                            onClick={() => handleAddTask(date, 'henryTasks')}
+                                            className="bg-indigo-500 hover:bg-indigo-600 text-white text-xs px-3 py-1 rounded-full shadow-sm transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 print:hidden"
+                                        >
+                                            Add Item
+                                        </button>
+                                    </h4>
+                                    {data.henryTasks.map((task, index) => (
+                                        <input
+                                            key={index}
+                                            type="text"
+                                            value={task}
+                                            onChange={(e) => handleTaskChange(date, 'henryTasks', index, e.target.value)}
+                                            placeholder="Add Henry's activity..."
+                                            className="w-full p-2 border border-gray-300 rounded-md text-sm mb-1 focus:ring-indigo-500 focus:border-indigo-500"
+                                        />
+                                    ))}
+                                     {data.henryTasks.length === 0 && (
+                                        <p className="text-sm text-gray-500 italic">No tasks for Henry yet.</p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Bottom Checkboxes */}
+                            <div>
+                                <h4 className="text-md font-medium text-gray-700 mb-1 mt-4 border-t-2 border-indigo-200 pt-2">Evening Tasks:</h4>
+                                {Object.entries(data.bottomTasks).map(([task, checked]) => (
+                                    <label key={task} className="flex items-center text-sm text-gray-800 mb-1 cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={checked}
+                                            onChange={() => handleCheckboxChange(date, 'bottomTasks', task)}
+                                            className="form-checkbox h-4 w-4 text-indigo-600 rounded mr-2"
+                                        />
+                                        {task}
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-4 font-inter">
+                    <header className="text-center mb-8 no-print">
+                        <h1 className="text-4xl font-bold text-indigo-800 mb-2">Family Calendar</h1>
+                        <p className="text-xl text-purple-700">June 14th - June 20th, 2025</p>
+                        <p className="text-lg text-gray-600">For Henry & Riley, while Mom & Dad are away!</p>
+                         <button
+                            onClick={() => window.print()}
+                            className="mt-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+                        >
+                            Print Calendar
+                        </button>
+                    </header>
+
+                    {/* Use web-container-gutters for consistent gutters on web display */}
+                    <div className="flex flex-wrap justify-center lg:justify-start web-container-gutters print-container">
+                        {Object.keys(calendarData).map((date, index) => (
+                            <DayCard
+                                key={date}
+                                date={date}
+                                data={calendarData[date]}
+                                handleCheckboxChange={handleCheckboxChange}
+                                handleTaskChange={handleTaskChange}
+                                handleAddTask={handleAddTask}
+                            />
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the App component
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
