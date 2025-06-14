@@ -89,8 +89,8 @@
                 background-color: #fff !important; /* Ensure white background for print */
             }
             @page {
-                size: landscape; /* 11in x 8.5in */
-                margin: 0.5in; /* 0.5in margins on all sides (top, right, bottom, left) */
+                size: landscape; /* 11in x 8.5in paper */
+                margin: 0.5in; /* 0.5in margins on all sides */
             }
 
             /* Hide elements not needed in print */
@@ -98,55 +98,72 @@
                 display: none !important;
             }
 
-            /* Main container for print - use block to handle floats */
+            /* Main container for print items */
             .print-container {
                 display: block !important; /* Override flex for print */
-                width: 100%; /* Full width within page margins */
+                width: 100%; /* Full width within page margins (10in) */
                 padding: 0 !important;
                 margin: 0 !important;
                 box-sizing: border-box;
                 overflow: hidden; /* Clear floats */
             }
 
-            /* Day card adjustments for print */
+            /* Base day card styles for print */
             .day-card-for-print {
                 float: left !important; /* Force side-by-side */
-                flex-shrink: 0 !important; /* Prevent shrinking */
-                flex-grow: 0 !important; /* Prevent growing */
-                /* Doubled the width from 2.2in to 4.4in for two columns, then adjust margins.
-                   For 2 columns, we need 1 gutter. Let's make it 0.5in.
-                   Remaining width for 2 cards: 10in - 0.5in = 9.5in.
-                   Width per card: 9.5in / 2 = 4.75in. */
-                width: 4.75in !important; /* Doubled width for 2 columns per row */
-                margin-right: 0.25in !important; /* Half of 0.5in gutter to the right */
-                margin-left: 0.25in !important; /* Half of 0.5in gutter to the left */
-                margin-bottom: 0.4in !important; /* Vertical spacing between rows */
-                padding: 0.2in !important; /* Internal padding within each card */
                 box-sizing: border-box !important;
-                border: 1px solid #a5b4fc !important;
+                border: 1px solid #a5b4fc !important; /* Tailwind indigo-300 */
                 border-radius: 0.25rem !important;
                 box-shadow: none !important;
                 page-break-inside: avoid !important; /* Prevent breaking a card across pages */
+                padding: 0.2in !important; /* Internal padding */
+                margin-bottom: 0.4in !important; /* Vertical spacing below cards/rows */
+                margin-left: 0 !important; /* Base left margin */
+                /* Default right margin is the gutter, overridden for last card in a row */
+                margin-right: 0.25in !important; /* Gutter size: 0.25in */
             }
 
-            /* Remove left margin for the first card in each row to align with page edge */
-            .day-card-for-print:nth-child(2n + 1) { /* Changed to 2n+1 for 2 columns */
-                clear: left !important; /* Start a new row */
-                margin-left: 0 !important;
+            /* --- Page 1: Cards 1-4 (4 columns) --- */
+            /* Printable width: 11in - 2*0.5in (page margins) = 10in */
+            /* Gutter: 0.25in */
+            /* Width for 4 cards: (10in - 3_gutters * 0.25in) / 4_cards = 9.25in / 4 = 2.3125in */
+            .day-card-for-print:nth-child(-n+4) { /* Selects cards 1, 2, 3, 4 */
+                width: 2.3125in !important;
             }
 
-            /* Remove right margin for the last card in each row to align with page edge */
-            .day-card-for-print:nth-child(2n) { /* Changed to 2n for 2 columns */
+            /* First card on Page 1 */
+            .day-card-for-print:nth-child(1) {
+                clear: left !important; /* Ensure it starts a new line */
+            }
+
+            /* Last card on Page 1 (4th card) */
+            .day-card-for-print:nth-child(4) {
+                margin-right: 0 !important;
+                page-break-after: always !important; /* Force page break after 4th card */
+            }
+
+            /* --- Page 2: Cards 5-7 (3 columns) --- */
+            /* Printable width: 10in */
+            /* Gutter: 0.25in */
+            /* Width for 3 cards: (10in - 2_gutters * 0.25in) / 3_cards = 9.5in / 3 */
+            .day-card-for-print:nth-child(n+5) { /* Selects cards 5, 6, 7 */
+                width: calc(9.5in / 3) !important; /* Approx 3.167in */
+            }
+
+            /* First card on Page 2 (5th card) */
+            .day-card-for-print:nth-child(5) {
+                clear: left !important; /* Ensure it starts a new line after page break */
+            }
+
+            /* Last card on Page 2 (7th card, assuming exactly 7 cards total) */
+            /* This also handles if it's the last card overall in the n+5 group */
+            .day-card-for-print:nth-last-child(1):nth-child(n+5) {
                 margin-right: 0 !important;
             }
-
-            /* Force a page break after the 2nd card (to get 2 per row)
-               and after the 4th card (to get a new page after 4 days total) */
-            .day-card-for-print:nth-child(2),
-            .day-card-for-print:nth-child(4) {
-                page-break-after: always !important;
-            }
-
+            /* If you have exactly 7 cards, this simpler rule also works for the 7th card:
+            .day-card-for-print:nth-child(7) {
+                margin-right: 0 !important;
+            } */
 
             /* Ensure internal elements for print */
             h3, h4 {
@@ -189,7 +206,7 @@
                 border-color: #c7d2fe !important;
             }
             ::-webkit-scrollbar {
-                display: none !important;
+                display: none !important; /* Hide scrollbars in print */
             }
             html, body {
                 overflow: hidden !important;
@@ -198,6 +215,7 @@
     </style>
 </head>
 <body>
+
     <div id="root"></div>
 
     <script type="text/babel">
