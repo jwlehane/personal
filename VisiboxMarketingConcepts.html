@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Visibox Marketing Concepts</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   <style>
+       body {
+           font-family: 'Inter', sans-serif;
+       }
+       .tab-active {
+           border-color: #4f46e5;
+           background-color: #3730a3;
+           color: #ffffff;
+       }
+       .tab-inactive {
+           border-color: transparent;
+           color: #9ca3af;
+       }
+       .concept-card {
+           background-color: #1f2937;
+           border: 1px solid #374151;
+           border-radius: 0.75rem;
+           padding: 1.5rem;
+           transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+       }
+       .concept-card:hover {
+           transform: translateY(-5px);
+           box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+       }
+   </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+   <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+       <!-- Header -->
+       <header class="text-center mb-10">
+           <h1 class="text-4xl sm:text-5xl font-bold text-white mb-2">Visibox Marketing Concepts</h1>
+           <p class="text-lg text-indigo-400">Bringing the Sphere Experience to Everyone</p>
+       </header>
+
+       <!-- Tabs for User Personas -->
+       <div class="mb-8">
+           <div class="border-b border-gray-700">
+               <nav class="-mb-px flex flex-wrap justify-center gap-x-4 sm:gap-x-6" aria-label="Tabs">
+                   <!-- Tab buttons will be dynamically generated -->
+               </nav>
+           </div>
+       </div>
+
+       <!-- Content for each persona -->
+       <main id="tab-content">
+           <!-- Persona content will be dynamically generated -->
+       </main>
+       
+       <!-- Veo Video Prompts Section -->
+       <section id="veo-prompts" class="mt-16">
+           <h2 class="text-3xl font-bold text-white text-center mb-8">Veo Video Ad Prompts (3 Seconds)</h2>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+               <div class="concept-card">
+                   <h4 class="text-xl font-semibold text-indigo-400 mb-3">Prompt 1: The Explosion</h4>
+                   <p class="text-gray-400">A hyper-realistic, cinematic shot of a single laptop on a stage. A finger taps the spacebar, and instantly, the entire background behind it explodes into a massive, 270-degree projection of a vibrant, moving galaxy, enveloping the stage.</p>
+               </div>
+               <div class="concept-card">
+                   <h4 class="text-xl font-semibold text-indigo-400 mb-3">Prompt 2: The Merge</h4>
+                   <p class="text-gray-400">A rapid, split-screen sequence. On the left, a musician passionately plays guitar. On the right, a VJ triggers clips. The split-screen merges to show the musician on stage alone, a MIDI foot pedal at their feet, controlling the exact same epic visuals themselves.</p>
+               </div>
+               <div class="concept-card">
+                   <h4 class="text-xl font-semibold text-indigo-400 mb-3">Prompt 3: The Transformation</h4>
+                   <p class="text-gray-400">A small, plain white room. A hand places a small projector on a table. When it's turned on, the walls instantly transform into a wrap-around, immersive video of a lush, hyper-realistic jungle with sounds of birds and rustling leaves. The final frame shows the Visibox logo and the tagline: "Your World. Reimagined."</p>
+               </div>
+           </div>
+       </section>
+
+   </div>
+
+   <script>
+       const marketingData = [
+           {
+               persona: "Indie Musician",
+               icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>`,
+               social: [
+                   {
+                       copy: "Your sound is huge. Your stage presence is electric. But your visuals? Don't let a small budget limit your show. Visibox lets you run stadium-style visuals and multichannel audio right from your laptop. It's time your show looked as big as it sounds. #IndieArtist #LiveMusic #DIYTour #Visibox",
+                       prompt: "A single musician on a dimly lit stage, bathed in the glow of a laptop. Behind them, a huge, vibrant projection of abstract light patterns fills the wall, perfectly synchronized with their performance. The mood is intimate yet epic."
+                   },
+                   {
+                       copy: "Stop juggling apps for backing tracks, visuals, and click tracks. Visibox syncs it all. Run your entire show from one laptop and a foot pedal. Spend less time on tech and more time performing. #MusicTech #LivePerformance #SmallVenue #GarageBandBudget",
+                       prompt: "A close-up shot of a musician's foot hitting a MIDI foot pedal on stage. In the background, out of focus, a dynamic video projection is visible, hinting at the control the pedal offers over the visual show."
+                   }
+               ],
+               ads: [
+                   {
+                       headline: "Big Show, Small Budget.",
+                       body: "You don't need a $2.3 billion venue like the Las Vegas Sphere to create an immersive experience. Visibox gives your band the power to sync stunning visuals and multi-channel audio on a garage-band budget. Download the free trial.",
+                       prompt: "A side-by-side comparison. On the left, a photo of the massive Las Vegas Sphere. On the right, a local band performing in a packed small club with impressive, synchronized projections behind them, mimicking the immersive feel."
+                   },
+                   {
+                       headline: "Your Laptop is Now Your VJ.",
+                       body: "Running a pro-level audiovisual show used to require racks of gear. Now, all it takes is your laptop. Visibox is the easy-to-use software that lets you control video, lights, and audio in perfect sync with your music. Get started in minutes.",
+                       prompt: "A graphic showing a laptop with the Visibox interface. Arrows point from the laptop to icons representing a projector, a sound system, and a live camera, illustrating how one device controls the entire setup."
+                   }
+               ]
+           },
+           {
+               persona: "Small Venue Owner",
+               icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>`,
+               social: [
+                   {
+                       copy: "What if your venue could offer immersive, Sphere-like experiences? With Visibox, you can turn your stage into a canvas for stunning visuals and spatial audio. Attract more artists and bigger audiences without a massive investment. #VenueOwner #LiveEvents #ProductionValue #AVtweeps",
+                       prompt: "An empty small music venue stage, but the back wall is transformed by a projection of a vast, otherworldly landscape, showing the potential of the space. The headline 'Your Stage, Reimagined' is overlaid."
+                   },
+                   {
+                       copy: "The tech that powers the Las Vegas Sphere is now accessible to everyone. Use Visibox to easily set up multi-screen displays and surround sound, making your venue the go-to spot for cutting-edge performances. #EventManager #ImmersiveTech #FutureOfLive",
+                       prompt: "A photo collage showing a DJ in a club with synchronized screens, a theater production with projected scenery, and a band with swirling light patterns, all unified under the Visibox logo."
+                   }
+               ],
+               ads: [
+                   {
+                       headline: "The Most In-Demand Venue in Town.",
+                       body: "Artists are looking for new ways to engage their audiences. Offer them the tools to create immersive shows with Visibox. It’s the affordable, easy-to-use solution for panoramic projections and multichannel audio that can dramatically increase your venue's production value.",
+                       prompt: "A stylized shot of a packed house at a small venue, with the audience looking mesmerized by the visuals surrounding the performer on stage. The focus is on the audience's captivated faces."
+                   },
+                   {
+                       headline: "Upgrade Your Venue. Not Your Budget.",
+                       body: "High-end production used to mean high-end costs. Not anymore. Visibox allows you to create large video walls and immersive soundscapes using affordable projectors and speakers. Book more shows, sell more tickets.",
+                       prompt: "A simple infographic showing a small investment (a laptop + projector icon) leading to a big return (icons for 'More Bookings,' 'Higher Ticket Sales,' 'Happy Audiences')."
+                   }
+               ]
+           },
+           {
+               persona: "Digital Artist / VJ",
+               icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" /><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" /></svg>`,
+               social: [
+                   {
+                       copy: "Stop wrestling with complicated VJ software. Visibox was designed for artists, not engineers. Easily map your visuals across multiple screens and sync with up to 8 channels of audio for truly immersive installations. Focus on your art; let Visibox handle the tech.",
+                       prompt: "A digital artist in their studio, looking at a three-monitor setup displaying a sprawling, continuous piece of generative art powered by Visibox. The artist is smiling, looking relaxed and in control."
+                   },
+                   {
+                       copy: "Your canvas just got bigger. Visibox's Video Wall Stretch feature makes it simple to create panoramic projections across multiple displays without distortion. Perfect for gallery installations, live visuals, and pop-up events. #DigitalArt #VJ #ImmersiveArt #CreativeCoding",
+                       prompt: "A striking visual of a single, ultra-wide video of a crashing wave seamlessly stretched across three vertical screens, creating a triptych effect. The image is clean, powerful, and focuses entirely on the visual output."
+                   }
+               ],
+               ads: [
+                   {
+                       headline: "Your Art. Uncompromised.",
+                       body: "You create stunning visuals. Don't let playback limitations hold you back. Visibox handles high-resolution video and multi-display outputs effortlessly, so your work is always seen the way you intended.",
+                       prompt: "A dark art gallery space where the only light comes from a massive, floor-to-ceiling projection of intricate, glowing fractal patterns. A few silhouettes of people are visible, admiring the art."
+                   },
+                   {
+                       headline: "The Easiest Way to Go Big.",
+                       body: "Want to turn your laptop into an immersive art installation? Visibox lets you span your video across multiple projectors to create huge, seamless visuals. It's the power of a media server in software designed for creators.",
+                       prompt: "A behind-the-scenes shot. A laptop running Visibox is connected to three small projectors, which are aimed at a large wall, combining to form one giant, cohesive image. This highlights the simplicity of the setup."
+                   }
+               ]
+           },
+           {
+               persona: "Theater / Dance Producer",
+               icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" /></svg>`,
+               social: [
+                   {
+                       copy: "Your story deserves a world, not just a stage. Create immersive, wrap-around scenery with projected visuals and transport your audience. Visibox makes it easy and affordable for small theater productions to leverage Sphere-level ideas. #TheatreTech #ImmersiveTheatre #SetDesign #LivePerformance",
+                       prompt: "A scene from a play on a small stage. Instead of a physical set, the background and floor are covered in a projection of a dense, moonlit forest, creating a powerful, atmospheric environment for the actors."
+                   },
+                   {
+                       copy: "From scene changes to soundscapes, control every element of your production from a single platform. Visibox syncs multi-screen video backdrops and spatial audio cues, giving you unparalleled creative control on a community theater budget. #DanceTech #ProductionManager #Stagecraft",
+                       prompt: "A shot from the tech booth of a small theater. On the screen is the Visibox interface, showing video cues lined up with audio tracks. In the distance, the stage is lit, ready for the show to begin."
+                   }
+               ],
+               ads: [
+                   {
+                       headline: "Reimagine Your Stage.",
+                       body: "Why build a set when you can project one? Visibox lets you create dynamic, 270-degree projected environments that can change instantly. Perfect for experimental theater, dance performances, and any story that needs a world as big as your imagination.",
+                       prompt: "A contemporary dancer is mid-leap on stage. The projection behind and beneath them is an explosion of colorful, abstract particles, making it look as though the dancer's movement is creating the visual world around them."
+                   },
+                   {
+                       headline: "The Power of Immersive Storytelling.",
+                       body: "The Las Vegas Sphere uses technology to transport audiences. Now you can too. With Visibox, add surround sound and dynamic visuals to your next production. It’s the affordable secret weapon for unforgettable theater.",
+                       prompt: "The faces of an audience, illuminated by the light of the stage. Their expressions are ones of awe and wonder, completely absorbed in the performance."
+                   }
+               ]
+           },
+           {
+               persona: "Event Organizer",
+               icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" /></svg>`,
+               social: [
+                   {
+                       copy: "Your event needs a 'wow' factor. How about an immersive audiovisual journey? Use Visibox to sync visuals and sound across multiple rooms, creating a cohesive, high-impact experience for your guests without a high-end budget. #EventProfs #CorporateEvents #ExperientialMarketing #EventTech",
+                       prompt: "A corporate event lounge area, transformed. The walls are covered in slow-moving, elegant projections of the company's logo morphing into abstract data visualizations. People are mingling, looking impressed."
+                   },
+                   {
+                       copy: "Planning a festival or multi-stage event? Synchronize visuals across every screen and even create immersive surround sound zones. Visibox gives you the power to create a unified, unforgettable atmosphere, all controlled from a few laptops. #FestivalProduction #EventProducer #LiveAV #Visibox",
+                       prompt: "A map-like graphic of a festival layout. Lines connect a central control icon (Visibox) to multiple stages and zones, illustrating synchronized video and audio being sent to each area."
+                   }
+               ],
+               ads: [
+                   {
+                       headline: "Make Your Next Event Unforgettable.",
+                       body: "From product launches to pop-up parties, immersive technology creates buzz. Visibox is the simple tool for creating stunning multi-screen visual displays and synchronized soundscapes that will have everyone talking.",
+                       prompt: "A high-energy shot from a pop-up event at night. An array of screens behind a DJ booth are all playing synchronized, fast-cutting visuals, creating a vibrant and exciting backdrop for the party."
+                   },
+                   {
+                       headline: "Sphere-Level Impact. Indie-Level Budget.",
+                       body: "You don't need a Vegas-sized budget to create a high-tech, immersive experience. Visibox democratizes the technology, allowing you to deliver awe-inspiring visuals and audio at your next event, affordably and easily.",
+                       prompt: "A person holding a smartphone, recording a stunning projection mapping display on the side of a building at an outdoor event. The focus is on the phone screen, capturing the shareable, 'Instagrammable' moment."
+                   }
+               ]
+           }
+       ];
+
+       const tabContainer = document.querySelector('nav');
+       const contentContainer = document.getElementById('tab-content');
+
+       function createContent(personaData, personaIndex) {
+           const promptToImageUrl = (prompt) => `https://placehold.co/600x400/111827/9ca3af?text=${encodeURIComponent(prompt)}`;
+           
+           return `
+               <div id="persona-${personaIndex}" class="persona-content hidden">
+                   <!-- Social Media Section -->
+                   <section>
+                       <h3 class="text-2xl font-bold text-white mb-6 border-l-4 border-indigo-500 pl-4">Social Media Posts</h3>
+                       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                           <!-- A/B Test 1 -->
+                           <div class="concept-card">
+                               <span class="text-sm font-semibold text-gray-500 uppercase">Test A</span>
+                               <img src="${promptToImageUrl(personaData.social[0].prompt)}" alt="${personaData.social[0].prompt}" class="my-4 rounded-lg w-full h-auto object-cover aspect-video">
+                               <p class="text-gray-300 mb-2">${personaData.social[0].copy}</p>
+                               <p class="text-xs text-indigo-400 font-mono">Image Prompt: ${personaData.social[0].prompt}</p>
+                           </div>
+                           <div class="concept-card">
+                               <span class="text-sm font-semibold text-gray-500 uppercase">Test B</span>
+                               <img src="${promptToImageUrl(personaData.social[1].prompt)}" alt="${personaData.social[1].prompt}" class="my-4 rounded-lg w-full h-auto object-cover aspect-video">
+                               <p class="text-gray-300 mb-2">${personaData.social[1].copy}</p>
+                               <p class="text-xs text-indigo-400 font-mono">Image Prompt: ${personaData.social[1].prompt}</p>
+                           </div>
+                       </div>
+                   </section>
+
+                   <!-- Ad Spots Section -->
+                   <section class="mt-12">
+                       <h3 class="text-2xl font-bold text-white mb-6 border-l-4 border-indigo-500 pl-4">Ad Spots</h3>
+                       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                           <!-- A/B Test 1 -->
+                           <div class="concept-card">
+                               <span class="text-sm font-semibold text-gray-500 uppercase">Test A</span>
+                               <img src="${promptToImageUrl(personaData.ads[0].prompt)}" alt="${personaData.ads[0].prompt}" class="my-4 rounded-lg w-full h-auto object-cover aspect-video">
+                               <h4 class="text-xl font-semibold text-indigo-400 mb-2">${personaData.ads[0].headline}</h4>
+                               <p class="text-gray-300 mb-2">${personaData.ads[0].body}</p>
+                               <p class="text-xs text-indigo-400 font-mono">Image Prompt: ${personaData.ads[0].prompt}</p>
+                           </div>
+                           <div class="concept-card">
+                               <span class="text-sm font-semibold text-gray-500 uppercase">Test B</span>
+                               <img src="${promptToImageUrl(personaData.ads[1].prompt)}" alt="${personaData.ads[1].prompt}" class="my-4 rounded-lg w-full h-auto object-cover aspect-video">
+                               <h4 class="text-xl font-semibold text-indigo-400 mb-2">${personaData.ads[1].headline}</h4>
+                               <p class="text-gray-300 mb-2">${personaData.ads[1].body}</p>
+                               <p class="text-xs text-indigo-400 font-mono">Image Prompt: ${personaData.ads[1].prompt}</p>
+                           </div>
+                       </div>
+                   </section>
+               </div>
+           `;
+       }
+
+       marketingData.forEach((persona, index) => {
+           // Create Tab Button
+           const tabButton = document.createElement('a');
+           tabButton.href = '#';
+           tabButton.classList.add('tab-button', 'whitespace-nowrap', 'py-4', 'px-1', 'border-b-2', 'font-medium', 'text-sm', 'flex', 'items-center', 'transition-colors');
+           tabButton.dataset.target = `persona-${index}`;
+           tabButton.innerHTML = `${persona.icon} ${persona.persona}`;
+           
+           if (index === 0) {
+               tabButton.classList.add('tab-active');
+           } else {
+               tabButton.classList.add('tab-inactive');
+           }
+           tabContainer.appendChild(tabButton);
+
+           // Create Content
+           contentContainer.innerHTML += createContent(persona, index);
+       });
+
+       // Show first tab content by default
+       document.getElementById('persona-0').classList.remove('hidden');
+
+       // Tab switching logic
+       const tabButtons = document.querySelectorAll('.tab-button');
+       tabButtons.forEach(button => {
+           button.addEventListener('click', (e) => {
+               e.preventDefault();
+               
+               // Deactivate all tabs
+               tabButtons.forEach(btn => {
+                   btn.classList.remove('tab-active');
+                   btn.classList.add('tab-inactive');
+               });
+
+               // Activate clicked tab
+               e.currentTarget.classList.add('tab-active');
+               e.currentTarget.classList.remove('tab-inactive');
+               
+               // Hide all content
+               document.querySelectorAll('.persona-content').forEach(content => {
+                   content.classList.add('hidden');
+               });
+
+               // Show target content
+               const targetId = e.currentTarget.dataset.target;
+               document.getElementById(targetId).classList.remove('hidden');
+           });
+       });
+
+   </script>
+</body>
+</html>
