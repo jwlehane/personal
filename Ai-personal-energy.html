@@ -89,7 +89,7 @@
 
 <div class="container">
     <h1>The Hidden Cost of AI Queries</h1>
-    <p>Running an AI request doesn't just process tokens; it requires significant electricity to power servers and freshwater to cool them. [attachment_0](attachment) Modern research shows that evaluating the environmental impact requires factoring in hardware power, processing time, and data center efficiency (PUE). The data below reflects the energy and water overhead for the latest 2026 frontier models.</p>
+    <p>Running an AI request doesn't just process tokens; it requires significant electricity to power servers and freshwater to cool them.  Modern research shows that evaluating the environmental impact requires factoring in hardware power, processing time, and data center efficiency (PUE). The data below reflects the energy and water overhead for the latest 2026 frontier models.</p>
 
     <h2>2026 Frontier Models Energy Comparison</h2>
     <table>
@@ -146,3 +146,68 @@
             <div class="metrics-grid">
                 <div class="metric-box" id="daily-metrics"></div>
                 <div class="metric-box" id="weekly-metrics"></div>
+            </div>
+            <div style="margin-top: 1rem;" id="equivalents"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateImpact() {
+        const selectElement = document.getElementById('model');
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        
+        const modelWh = parseFloat(selectedOption.value);
+        const modelWaterMl = parseFloat(selectedOption.getAttribute('data-water'));
+        const promptsInput = parseInt(document.getElementById('prompts').value);
+        const dailyMultiplier = parseInt(document.getElementById('timeframe').value);
+        
+        // Calculate total prompts per day and week
+        const promptsPerDay = promptsInput * dailyMultiplier;
+        const promptsPerWeek = promptsPerDay * 7;
+        
+        // Energy calculations (Wh)
+        const dailyWh = modelWh * promptsPerDay;
+        const weeklyWh = modelWh * promptsPerWeek;
+        
+        // Water calculations (ml)
+        const dailyWater = modelWaterMl * promptsPerDay;
+        const weeklyWater = modelWaterMl * promptsPerWeek;
+        
+        // Equivalents calculated on a WEEKLY basis
+        // 10W bulb hours (Total Wh / 10W)
+        const weeklyBulbHours = (weeklyWh / 10).toFixed(1);
+        
+        // Shower seconds (Standard 2.1 GPM shower = ~133 ml per second)
+        const weeklyShowerSeconds = (weeklyWater / 133).toFixed(1);
+        
+        let showerDisplay = `${weeklyShowerSeconds} seconds`;
+        if (weeklyShowerSeconds > 60) {
+            showerDisplay = `${(weeklyShowerSeconds / 60).toFixed(1)} minutes`;
+        }
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        
+        document.getElementById('daily-metrics').innerHTML = `
+            <strong>Daily Totals</strong><br>
+            ⚡ ${dailyWh.toFixed(1)} Wh<br>
+            💧 ${dailyWater.toFixed(1)} ml
+        `;
+        
+        document.getElementById('weekly-metrics').innerHTML = `
+            <strong>Weekly Totals</strong><br>
+            ⚡ ${weeklyWh.toFixed(1)} Wh<br>
+            💧 ${weeklyWater.toFixed(1)} ml
+        `;
+        
+        document.getElementById('equivalents').innerHTML = `
+            <strong>Weekly Real-World Equivalents:</strong><br>
+            💡 Leaving a 10W LED bulb on for <strong>${weeklyBulbHours} hours</strong>.<br>
+            🚿 Running a standard shower for <strong>${showerDisplay}</strong>.
+        `;
+    }
+</script>
+
+</body>
+</html>
