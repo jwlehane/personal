@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Energy & Water Calculator</title>
+    <style>
+        body { 
+            font-family: system-ui, -apple-system, sans-serif; 
+            max-width: 500px; 
+            margin: 2rem auto; 
+            padding: 1.5rem; 
+            background: #f4f4f9; 
+            color: #333; 
+        }
+        .calculator { 
+            background: white; 
+            padding: 2rem; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        }
+        h2 { margin-top: 0; font-size: 1.5rem; }
+        label { display: block; margin-top: 1.2rem; font-weight: 600; font-size: 0.9rem; }
+        select, input { 
+            width: 100%; 
+            padding: 0.6rem; 
+            margin-top: 0.4rem; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            font-size: 1rem; 
+            box-sizing: border-box; 
+        }
+        button { 
+            margin-top: 1.5rem; 
+            width: 100%; 
+            padding: 0.75rem; 
+            background: #0066cc; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            font-size: 1.05rem; 
+            cursor: pointer; 
+            font-weight: 600;
+        }
+        button:hover { background: #005bb5; }
+        #result { 
+            margin-top: 1.5rem; 
+            padding: 1rem; 
+            background: #e1f5fe; 
+            border-left: 4px solid #0288d1; 
+            border-radius: 4px; 
+            display: none; 
+            line-height: 1.6; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <h2>AI Energy & Water Calculator</h2>
+    
+    <label for="model">Select AI Model:</label>
+    <select id="model">
+        <option value="0.24" data-water="0.26">Gemini 3.1 Fast</option>
+        <option value="2.00" data-water="2.00">Gemini 3.1 Pro</option>
+        <option value="0.34" data-water="0.32">GPT-4o</option>
+        <option value="15.00" data-water="15.00">OpenAI o3</option>
+        <option value="0.90" data-water="0.90">Claude 4.6 Sonnet</option>
+        <option value="4.50" data-water="4.50">Claude 4.6 Opus</option>
+        <option value="1.00" data-water="1.00">Grok 4.2</option>
+        <option value="10.00" data-water="10.00">Grok 5</option>
+    </select>
+
+    <label for="prompts">Number of Prompts:</label>
+    <input type="number" id="prompts" value="10" min="1">
+
+    <label for="timeframe">Timeframe:</label>
+    <select id="timeframe">
+        <option value="15">Per 15 Minutes</option>
+        <option value="60">Per Hour</option>
+        <option value="1440">Per Day</option>
+    </select>
+
+    <button onclick="calculateImpact()">Calculate Impact</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function calculateImpact() {
+        const selectElement = document.getElementById('model');
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        
+        const modelWh = parseFloat(selectedOption.value);
+        const modelWaterMl = parseFloat(selectedOption.getAttribute('data-water'));
+        const prompts = parseInt(document.getElementById('prompts').value);
+        const timeframeStr = document.getElementById('timeframe').options[document.getElementById('timeframe').selectedIndex].text;
+        
+        // Calculations
+        const totalWh = modelWh * prompts;
+        const totalWater = modelWaterMl * prompts;
+        
+        const bulbMinutes = (totalWh / 10) * 60;
+        
+        let timeDisplay = "";
+        if (bulbMinutes < 60) {
+            timeDisplay = `${Math.round(bulbMinutes)} minutes`;
+        } else {
+            const hours = (bulbMinutes / 60).toFixed(1);
+            timeDisplay = `${hours} hours`;
+        }
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `
+            <strong>Energy Used:</strong> ${totalWh.toFixed(2)} Wh ${timeframeStr.toLowerCase()}<br>
+            <strong>Water Evaporated:</strong> ${totalWater.toFixed(2)} ml ${timeframeStr.toLowerCase()}<br><br>
+            <strong>Impact Equivalent:</strong> Leaving a 10W LED light bulb on for <strong>${timeDisplay}</strong>.
+        `;
+    }
+</script>
+
+</body>
+</html>
