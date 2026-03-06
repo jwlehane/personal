@@ -3,24 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Energy & Water Calculator</title>
+    <title>AI Environmental Impact Calculator</title>
     <style>
         body { 
             font-family: system-ui, -apple-system, sans-serif; 
-            max-width: 500px; 
+            max-width: 800px; 
             margin: 2rem auto; 
             padding: 1.5rem; 
             background: #f4f4f9; 
             color: #333; 
+            line-height: 1.6;
         }
-        .calculator { 
+        .container { 
             background: white; 
             padding: 2rem; 
             border-radius: 8px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
         }
-        h2 { margin-top: 0; font-size: 1.5rem; }
-        label { display: block; margin-top: 1.2rem; font-weight: 600; font-size: 0.9rem; }
+        h1, h2, h3 { color: #111; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th { background-color: #f8f9fa; }
+        .calculator {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            border: 1px solid #e9ecef;
+            margin-top: 2rem;
+        }
+        label { display: block; margin-top: 1rem; font-weight: 600; font-size: 0.9rem; }
         select, input { 
             width: 100%; 
             padding: 0.6rem; 
@@ -50,75 +70,79 @@
             border-left: 4px solid #0288d1; 
             border-radius: 4px; 
             display: none; 
-            line-height: 1.6; 
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .metric-box {
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
     </style>
 </head>
 <body>
 
-<div class="calculator">
-    <h2>AI Energy & Water Calculator</h2>
-    
-    <label for="model">Select AI Model:</label>
-    <select id="model">
-        <option value="0.24" data-water="0.26">Gemini 3.1 Fast</option>
-        <option value="2.00" data-water="2.00">Gemini 3.1 Pro</option>
-        <option value="0.34" data-water="0.32">GPT-4o</option>
-        <option value="15.00" data-water="15.00">OpenAI o3</option>
-        <option value="0.90" data-water="0.90">Claude 4.6 Sonnet</option>
-        <option value="4.50" data-water="4.50">Claude 4.6 Opus</option>
-        <option value="1.00" data-water="1.00">Grok 4.2</option>
-        <option value="10.00" data-water="10.00">Grok 5</option>
-    </select>
+<div class="container">
+    <h1>The Hidden Cost of AI Queries</h1>
+    <p>Running an AI request doesn't just process tokens; it requires significant electricity to power servers and freshwater to cool them. [attachment_0](attachment) Modern research shows that evaluating the environmental impact requires factoring in hardware power, processing time, and data center efficiency (PUE). The data below reflects the energy and water overhead for the latest 2026 frontier models.</p>
 
-    <label for="prompts">Number of Prompts:</label>
-    <input type="number" id="prompts" value="10" min="1">
+    <h2>2026 Frontier Models Energy Comparison</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Provider</th>
+                <th>Model</th>
+                <th>Est. Energy / Prompt</th>
+                <th>10W Light Bulb Equivalent</th>
+                <th>Climate Impact (1-5)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td><strong>Google</strong></td><td>Gemini 3.1 Fast</td><td>~0.24 Wh</td><td>~1.5 minutes</td><td>1: 🌡️🧊</td></tr>
+            <tr><td><strong>Google</strong></td><td>Gemini 3.1 Pro</td><td>~2.00 Wh</td><td>~12.0 minutes</td><td>2: 🌡️💧</td></tr>
+            <tr><td><strong>OpenAI</strong></td><td>GPT-4o</td><td>~0.34 Wh</td><td>~2.0 minutes</td><td>1: 🌡️🧊</td></tr>
+            <tr><td><strong>OpenAI</strong></td><td>o3</td><td>~15.00 Wh</td><td>~90.0 minutes</td><td>5: 🌡️🌋</td></tr>
+            <tr><td><strong>Anthropic</strong></td><td>Claude 4.6 Sonnet</td><td>~0.90 Wh</td><td>~5.5 minutes</td><td>2: 🌡️💧</td></tr>
+            <tr><td><strong>Anthropic</strong></td><td>Claude 4.6 Opus</td><td>~4.50 Wh</td><td>~27.0 minutes</td><td>3: 🌡️🌊</td></tr>
+            <tr><td><strong>xAI</strong></td><td>Grok 4.2</td><td>~1.00 Wh</td><td>~6.0 minutes</td><td>2: 🌡️💧</td></tr>
+            <tr><td><strong>xAI</strong></td><td>Grok 5</td><td>~10.00 Wh</td><td>~60.0 minutes</td><td>5: 🌡️🌋</td></tr>
+        </tbody>
+    </table>
 
-    <label for="timeframe">Timeframe:</label>
-    <select id="timeframe">
-        <option value="15">Per 15 Minutes</option>
-        <option value="60">Per Hour</option>
-        <option value="1440">Per Day</option>
-    </select>
-
-    <button onclick="calculateImpact()">Calculate Impact</button>
-
-    <div id="result"></div>
-</div>
-
-<script>
-    function calculateImpact() {
-        const selectElement = document.getElementById('model');
-        const selectedOption = selectElement.options[selectElement.selectedIndex];
+    <div class="calculator">
+        <h2>Impact Calculator</h2>
         
-        const modelWh = parseFloat(selectedOption.value);
-        const modelWaterMl = parseFloat(selectedOption.getAttribute('data-water'));
-        const prompts = parseInt(document.getElementById('prompts').value);
-        const timeframeStr = document.getElementById('timeframe').options[document.getElementById('timeframe').selectedIndex].text;
-        
-        // Calculations
-        const totalWh = modelWh * prompts;
-        const totalWater = modelWaterMl * prompts;
-        
-        const bulbMinutes = (totalWh / 10) * 60;
-        
-        let timeDisplay = "";
-        if (bulbMinutes < 60) {
-            timeDisplay = `${Math.round(bulbMinutes)} minutes`;
-        } else {
-            const hours = (bulbMinutes / 60).toFixed(1);
-            timeDisplay = `${hours} hours`;
-        }
+        <label for="model">Select AI Model:</label>
+        <select id="model">
+            <option value="0.24" data-water="0.26">Gemini 3.1 Fast</option>
+            <option value="2.00" data-water="2.00">Gemini 3.1 Pro</option>
+            <option value="0.34" data-water="0.32">GPT-4o</option>
+            <option value="15.00" data-water="15.00">OpenAI o3</option>
+            <option value="0.90" data-water="0.90">Claude 4.6 Sonnet</option>
+            <option value="4.50" data-water="4.50">Claude 4.6 Opus</option>
+            <option value="1.00" data-water="1.00">Grok 4.2</option>
+            <option value="10.00" data-water="10.00">Grok 5</option>
+        </select>
 
-        const resultDiv = document.getElementById('result');
-        resultDiv.style.display = 'block';
-        resultDiv.innerHTML = `
-            <strong>Energy Used:</strong> ${totalWh.toFixed(2)} Wh ${timeframeStr.toLowerCase()}<br>
-            <strong>Water Evaporated:</strong> ${totalWater.toFixed(2)} ml ${timeframeStr.toLowerCase()}<br><br>
-            <strong>Impact Equivalent:</strong> Leaving a 10W LED light bulb on for <strong>${timeDisplay}</strong>.
-        `;
-    }
-</script>
+        <label for="prompts">Number of Prompts:</label>
+        <input type="number" id="prompts" value="10" min="1">
 
-</body>
-</html>
+        <label for="timeframe">Frequency of these Prompts:</label>
+        <select id="timeframe">
+            <option value="96">Every 15 Minutes</option>
+            <option value="24">Every Hour</option>
+            <option value="1">Once a Day</option>
+        </select>
+
+        <button onclick="calculateImpact()">Calculate Daily & Weekly Impact</button>
+
+        <div id="result">
+            <h3 style="margin-top: 0;">Your Usage Footprint</h3>
+            <div class="metrics-grid">
+                <div class="metric-box" id="daily-metrics"></div>
+                <div class="metric-box" id="weekly-metrics"></div>
