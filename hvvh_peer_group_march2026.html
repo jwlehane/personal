@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innovating Upstate: Demo Night & Founder Peer Group</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Outfit', sans-serif; background-color: #F8FAFC; color: #0F172A; }
+        .gradient-text {
+            background: linear-gradient(to right, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Section 1: Hero Banner -->
+    <header class="bg-slate-900 text-white py-24 text-center px-4">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-6xl font-extrabold tracking-tight mb-6">
+                <span class="gradient-text">Innovating Upstate:</span><br> Demo Night & Founder Peer Group
+            </h1>
+            <p class="text-xl md:text-2xl font-light text-slate-300 mb-10">
+                Exploring growth, friction, and breakthroughs with emerging startups across EdTech, FinTech, Clean Energy, and AI.
+            </p>
+            <a href="#cohort" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 shadow-lg hover:shadow-xl">
+                View the Cohort
+            </a>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        <!-- Section 2: Event Overview -->
+        <section class="mb-20 text-center max-w-3xl mx-auto">
+            <h2 class="text-3xl font-bold border-b-4 border-blue-500 inline-block pb-2 mb-6">Two Tracks. One Ecosystem.</h2>
+            <p class="text-lg text-slate-600 leading-relaxed">
+                Join us for an evening of high-impact presentations and collaborative problem-solving. This event features rapid-fire pitches from innovative tech startups alongside a closed-door roundtable where established founders tackle the operational friction of scaling.
+            </p>
+        </section>
+
+        <!-- Section 3: The Startups Pitching -->
+        <section id="cohort" class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold border-b-4 border-teal-500 inline-block pb-2 mb-4">The Startups Pitching</h2>
+                <p class="text-slate-600 text-lg">Rapid-fire presentations from high-growth ventures.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Elara -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-t-4 border-[#14B8A6] card-hover flex flex-col h-full">
+                    <h3 class="text-2xl font-bold mb-2">Elara</h3>
+                    <p class="text-sm text-teal-600 font-semibold mb-4 border-b border-slate-100 pb-4">Tania Cruz (CEO, Founder)</p>
+                    <p class="text-slate-600 flex-grow">An AI immigration platform that automates application filings, making them up to 90% cheaper and 95% faster than the traditional route.</p>
+                </div>
+
+                <!-- Floating Fleet AI -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-t-4 border-[#14B8A6] card-hover flex flex-col h-full">
+                    <h3 class="text-2xl font-bold mb-2">Floating Fleet AI</h3>
+                    <p class="text-sm text-teal-600 font-semibold mb-4 border-b border-slate-100 pb-4">Roger Zhan (Founder & CEO)</p>
+                    <p class="text-slate-600 flex-grow">Delivers transparent, trustworthy AI scheduling solutions tailored for floating fleet operators and charter brokers in private aviation.</p>
+                </div>
+
+                <!-- Homefield Fund -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-t-4 border-[#14B8A6] card-hover flex flex-col h-full">
+                    <h3 class="text-2xl font-bold mb-2">Homefield Fund</h3>
+                    <p class="text-sm text-teal-600 font-semibold mb-4 border-b border-slate-100 pb-4">Heidi Knoblauch (Founder)</p>
+                    <p class="text-slate-600 flex-grow">A platform providing infrastructure for emerging fund managers, accelerators, universities, and other ecosystem builders.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Founder Peer Group -->
+        <section class="mb-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold border-b-4 border-purple-500 inline-block pb-2 mb-4">Founder Peer Group</h2>
+                <p class="text-slate-600 text-lg">Roundtable participants tackling operational scale.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- ModMath -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#8B5CF6] card-hover">
+                    <h3 class="text-2xl font-bold mb-2">ModMath</h3>
+                    <p class="text-sm text-purple-600 font-semibold mb-3">Jonathan Rose</p>
+                    <p class="text-slate-600 mb-4">Assistive technology software for kids with dyslexia, dysgraphia, executive functioning, and motor skills difficulties.</p>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <strong class="text-sm text-slate-800 block mb-1">Current Focus:</strong>
+                        <span class="text-sm text-slate-600">Navigating D2C vs. Enterprise strategies and managing PII during user onboarding.</span>
+                    </div>
+                </div>
+
+                <!-- GoodBread -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#8B5CF6] card-hover">
+                    <h3 class="text-2xl font-bold mb-2">GoodBread</h3>
+                    <p class="text-sm text-purple-600 font-semibold mb-3">Noa Simons</p>
+                    <p class="text-slate-600 mb-4">A platform building proprietary models to underwrite small business credit efficiently using real-time cash flow and behavioral analysis.</p>
+                </div>
+
+                <!-- PVT Clean Energy -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#8B5CF6] card-hover">
+                    <h3 class="text-2xl font-bold mb-2">PVT Clean Energy</h3>
+                    <p class="text-sm text-purple-600 font-semibold mb-3">Mehdi Zadshir</p>
+                    <p class="text-slate-600 mb-4">A clean energy startup commercializing building-integrated energy harvesting technologies.</p>
+                </div>
+
+                <!-- Growth Stage Partner -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg border-l-4 border-[#8B5CF6] card-hover">
+                    <h3 class="text-2xl font-bold mb-2">Growth Stage Partner</h3>
+                    <p class="text-sm text-purple-600 font-semibold mb-3">Anonymous Founder</p>
+                    <p class="text-slate-600 mb-4">Scaling a sales team and managing major B2B partnerships.</p>
+                    <div class="bg-slate-50 p-4 rounded-lg">
+                        <strong class="text-sm text-slate-800 block mb-1">Current Focus:</strong>
+                        <span class="text-sm text-slate-600">Activating large channel partners and maintaining team motivation during operational pivots.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: The Friction Landscape -->
+        <section class="mb-20">
+            <div class="bg-slate-900 rounded-3xl p-10 md:p-16 shadow-2xl text-white">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold border-b-4 border-rose-500 inline-block pb-2 mb-6 text-white">What We Are Solving Today</h2>
+                    <p class="text-slate-300 text-lg mb-8">The Founder Peer Group will deep-dive into these shared hurdles:</p>
+                    
+                    <ul class="space-y-6">
+                        <li class="flex items-start">
+                            <span class="text-rose-500 mr-4 text-2xl">⚡</span>
+                            <div>
+                                <strong class="block text-lg text-rose-400 mb-1">Go-To-Market Balance</strong>
+                                <span class="text-slate-300">Weighing immediate direct-to-consumer cash flow against lucrative but lengthy B2B enterprise sales cycles.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-rose-500 mr-4 text-2xl">🤝</span>
+                            <div>
+                                <strong class="block text-lg text-rose-400 mb-1">Partnership Activation</strong>
+                                <span class="text-slate-300">Moving massive channel partners past the initial introduction phase to become active champions of a product.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-rose-500 mr-4 text-2xl">⚙️</span>
+                            <div>
+                                <strong class="block text-lg text-rose-400 mb-1">Technical Transitions</strong>
+                                <span class="text-slate-300">Keeping product development moving forward while upgrading or swapping technical teams.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-rose-500 mr-4 text-2xl">🔒</span>
+                            <div>
+                                <strong class="block text-lg text-rose-400 mb-1">Data & Privacy</strong>
+                                <span class="text-slate-300">Finding the Minimum Viable Solution for onboarding while navigating strict PII and privacy regulations.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Section 6: Footer -->
+    <footer class="bg-slate-100 border-t border-slate-200 py-12 text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-slate-600 font-semibold mb-4">Moderated by Johnny LeHane and Scott Tornek.</p>
+            <div class="space-x-4">
+                <a href="https://calendar.app.google/HZuAqyVbqSHaTznW8" class="text-blue-600 hover:text-blue-800 font-medium transition-colors">Meet Johnny</a>
+                <span class="text-slate-300">|</span>
+                <a href="#" class="text-blue-600 hover:text-blue-800 font-medium transition-colors">Contact Us</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
