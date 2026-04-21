@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Adoption & Governance: Strategic Blueprint</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom Configuration & Styling -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        brand: {
+                            teal: '#0d9488', // Accent 1
+                            amber: '#d97706', // Accent 2
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Base typography and body setup */
+        body {
+            background-color: #f8fafc; /* light warm neutral */
+            color: #1e293b;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* * Chart Container Styling (MANDATORY REQUIREMENT)
+         * Ensures charts are strictly constrained, responsive, and do not overflow.
+         */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        @media (min-width: 768px) { 
+            .chart-container { height: 350px; } 
+        }
+
+        /* Hide sections by default for SPA navigation */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive Element Styling */
+        .interactive-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .interactive-card:hover, .interactive-card.selected {
+            border-color: #0d9488;
+            box-shadow: 0 4px 6px -1px rgba(13, 148, 136, 0.2);
+            background-color: #f0fdfa;
+        }
+
+        /* Hide scrollbar for clean UI but allow scroll */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+
+    <!-- Placeholder Comments (MANDATORY) -->
+    <!-- Chosen Palette: Warm Neutrals (Slate 50/100) with Teal (#0d9488) and Amber (#d97706) accents. -->
+    <!-- Application Structure Plan: A dashboard-style SPA structure. Chosen to allow executives to jump directly to specific strategic areas (Context, Risks, Strategy, Vendor Assessment) without linear scrolling. It frames the qualitative meeting notes into actionable, quantifiable data points suitable for a CIO advisory presentation. -->
+    <!-- Visualization & Content Choices: 
+         - Context -> Growth vs Operational Drag -> Donut Chart (Chart.js) -> Hover interaction -> Highlights urgency of AI leverage.
+         - Risks -> Document Parsing Pain Points -> Bar Chart (Chart.js) -> Compare frequency of model failures -> Shows why generalized models fail.
+         - Strategy -> Phased Rollout -> HTML Grid Cards + JS Detail Panel -> Click to reveal details -> Organizes complex qualitative processes into a digestible interactive framework. NO SVG/Mermaid.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- Sidebar Navigation -->
+    <nav class="w-full md:w-64 bg-slate-900 text-slate-100 flex flex-col shadow-xl z-10 sticky top-0 md:h-screen">
+        <div class="p-6 bg-slate-800">
+            <h1 class="text-xl font-bold tracking-tight text-white">AI Strategy <span class="text-brand-teal">Blueprint</span></h1>
+            <p class="text-xs text-slate-400 mt-1">CIO Advisory Briefing</p>
+        </div>
+        <div class="flex-1 overflow-y-auto py-4 px-3 space-y-1" id="nav-menu">
+            <!-- Nav buttons generated by JS to handle active states easily -->
+            <button data-target="exec-summary" class="nav-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium transition-colors bg-brand-teal text-white shadow-md">
+                &#9635; Executive Summary
+            </button>
+            <button data-target="risk-analysis" class="nav-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 transition-colors">
+                &#9888; Risk & Pain Points
+            </button>
+            <button data-target="adoption-strategy" class="nav-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 transition-colors">
+                &#9881; Adoption Strategy
+            </button>
+            <button data-target="vendor-assessment" class="nav-btn w-full text-left px-4 py-3 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 transition-colors">
+                &#9744; Vendor Assessment
+            </button>
+        </div>
+        <div class="p-4 border-t border-slate-700">
+            <p class="text-xs text-slate-500 text-center">Based on 2026 Q2 Advisory Data</p>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 p-6 md:p-10 overflow-y-auto">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- VIEW: Executive Summary -->
+            <section id="exec-summary" class="view-section active">
+                <header class="mb-8 border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Executive Summary & Context</h2>
+                    <p class="text-lg text-slate-600">Aligning operational scaling with responsible technology deployment.</p>
+                </header>
+                
+                <div class="mb-8 text-slate-700 text-base leading-relaxed">
+                    <p class="mb-4"><strong>Section Purpose:</strong> This section establishes the foundational context driving the urgent need for managed AI solutions. It highlights the tension between the firm's rapid annual growth and the operational drag caused by inefficient legacy workflows. Users can interact with the chart to visualize the distribution of scaling pressures.</p>
+                    <p>The organization is experiencing significant growth, currently tracking at 12–18% year-over-year. This expansion is straining existing manual workflows in sales, wealth management, and policy processing. While artificial intelligence presents a clear opportunity for leverage, unmanaged decentralized usage introduces unacceptable risks. The core challenge is a change-management exercise, not purely a technological one.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
+                        <h3 class="text-xl font-semibold mb-4 text-slate-800">Operational Pressure Profile</h3>
+                        <p class="text-sm text-slate-500 mb-6">Estimated distribution of organizational resources consumed by scaling challenges.</p>
+                        <!-- Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="growthChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-brand-teal/10 border-l-4 border-brand-teal p-5 rounded-r-lg">
+                            <h4 class="font-bold text-slate-900 mb-1">Key Finding 1: Growth outpaces infrastructure</h4>
+                            <p class="text-sm text-slate-700">At 18% YoY growth, manual document review processes are breaking down, leading to processing backlogs.</p>
+                        </div>
+                        <div class="bg-brand-amber/10 border-l-4 border-brand-amber p-5 rounded-r-lg">
+                            <h4 class="font-bold text-slate-900 mb-1">Key Finding 2: Shadow IT Risk</h4>
+                            <p class="text-sm text-slate-700">Frontline workers are seeking efficiency through unapproved, public AI models, exposing proprietary client data.</p>
+                        </div>
+                        <div class="bg-slate-100 border-l-4 border-slate-400 p-5 rounded-r-lg">
+                            <h4 class="font-bold text-slate-900 mb-1">Key Finding 3: The "Chatbot" Fallacy</h4>
+                            <p class="text-sm text-slate-700">Conversational AI is only a fraction of the solution; traditional deterministic software often performs better for strict document comparison tasks.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Risk & Pain Points -->
+            <section id="risk-analysis" class="view-section">
+                <header class="mb-8 border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Risk & Pain Point Analysis</h2>
+                    <p class="text-lg text-slate-600">Where off-the-shelf AI models fail in complex enterprise environments.</p>
+                </header>
+
+                <div class="mb-8 text-slate-700 text-base leading-relaxed">
+                    <p class="mb-4"><strong>Section Purpose:</strong> This view quantifies the specific operational pain points identified during risk advisory sessions. It demonstrates that generalized AI models frequently misinterpret complex industry documents. Use the chart to compare the frequency of specific failure modes when deploying un-tuned AI on policy documents.</p>
+                    <p>Field data from IT and risk advisory teams indicate that while current Large Language Models (LLMs) excel at generating summaries, they frequently fail at precision tasks critical to insurance and wealth management, such as identifying specific exclusions or endorsements buried in original policy documents.</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 mb-8">
+                    <h3 class="text-xl font-semibold mb-2 text-slate-800">Frequency of AI-Assisted Errors (Unmanaged Models)</h3>
+                    <p class="text-sm text-slate-500 mb-6">Based on internal testing of generalized LLMs against standard policy documents.</p>
+                    
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="riskChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="text-2xl mb-2">&#9888;</div>
+                        <h4 class="font-bold text-slate-900 mb-2">The Exclusion Blindspot</h4>
+                        <p class="text-sm text-slate-700">Models optimized for conversational flow often smooth over dense legal caveats, leading to summaries that omit critical coverage exclusions. This requires a shift from generative tasks to strict extraction tasks.</p>
+                    </div>
+                    <div class="p-6 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="text-2xl mb-2">&#9741;</div>
+                        <h4 class="font-bold text-slate-900 mb-2">Platform Sprawl</h4>
+                        <p class="text-sm text-slate-700">Departments purchasing specialized AI tools independently results in fragmented data silos, duplicative licensing costs, and inconsistent security governance across the enterprise.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Adoption Strategy -->
+            <section id="adoption-strategy" class="view-section">
+                <header class="mb-8 border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Change Management & Adoption Framework</h2>
+                    <p class="text-lg text-slate-600">A phased approach to integrating AI into frontline workflows safely.</p>
+                </header>
+
+                <div class="mb-8 text-slate-700 text-base leading-relaxed">
+                    <p class="mb-4"><strong>Section Purpose:</strong> This section outlines the recommended strategic methodology for deploying new technologies. It shifts the focus from software acquisition to human workflow integration. Click through the phases in the diagram below to explore the specific actions and rationale for each stage of the rollout.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Interactive Elements List -->
+                    <div class="lg:col-span-1 space-y-3" id="strategy-cards">
+                        <div class="interactive-card selected border-2 border-brand-teal p-4 rounded-lg bg-f0fdfa" data-phase="1">
+                            <h4 class="font-bold text-slate-900 flex justify-between items-center">
+                                <span>Phase 1: Executive Alignment</span>
+                                <span class="text-brand-teal">&#10140;</span>
+                            </h4>
+                        </div>
+                        <div class="interactive-card border-2 border-slate-200 p-4 rounded-lg bg-white" data-phase="2">
+                            <h4 class="font-bold text-slate-900 flex justify-between items-center">
+                                <span>Phase 2: User Advisory Groups</span>
+                                <span class="text-slate-400">&#10140;</span>
+                            </h4>
+                        </div>
+                        <div class="interactive-card border-2 border-slate-200 p-4 rounded-lg bg-white" data-phase="3">
+                            <h4 class="font-bold text-slate-900 flex justify-between items-center">
+                                <span>Phase 3: Targeted PoCs</span>
+                                <span class="text-slate-400">&#10140;</span>
+                            </h4>
+                        </div>
+                        <div class="interactive-card border-2 border-slate-200 p-4 rounded-lg bg-white" data-phase="4">
+                            <h4 class="font-bold text-slate-900 flex justify-between items-center">
+                                <span>Phase 4: Opt-In Training</span>
+                                <span class="text-slate-400">&#10140;</span>
+                            </h4>
+                        </div>
+                    </div>
+
+                    <!-- Detail Display Area -->
+                    <div class="lg:col-span-2 bg-slate-800 text-white p-8 rounded-xl shadow-lg flex flex-col justify-center min-h-[300px]">
+                        <div id="strategy-detail-content" class="transition-opacity duration-300">
+                            <div class="text-brand-teal text-4xl mb-4">&#9873;</div>
+                            <h3 class="text-2xl font-bold mb-4">Phase 1: Executive Alignment</h3>
+                            <p class="text-slate-300 leading-relaxed text-lg mb-4">Before selecting software, the executive team must define the acceptable risk parameters and core objectives. Are we optimizing for cost reduction, revenue generation, or error reduction?</p>
+                            <ul class="list-disc pl-5 text-slate-400 space-y-2">
+                                <li>Establish data privacy boundaries.</li>
+                                <li>Define metrics for measuring experiment success.</li>
+                                <li>Commit to a change-management methodology.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: Vendor Assessment -->
+            <section id="vendor-assessment" class="view-section">
+                <header class="mb-8 border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-2">Vendor & Infrastructure Strategy</h2>
+                    <p class="text-lg text-slate-600">Navigating the Build vs. Buy vs. Migrate decision matrix.</p>
+                </header>
+
+                <div class="mb-8 text-slate-700 text-base leading-relaxed">
+                    <p class="mb-4"><strong>Section Purpose:</strong> This section provides a framework for evaluating technical infrastructure options. It compares the trade-offs of developing proprietary models versus purchasing off-the-shelf solutions. Use the interactive toggles below to filter the strategic analysis based on your organization's primary concern (e.g., Security vs. Speed).</p>
+                    <p>While owning a domain-specific LLM is increasingly feasible due to falling compute costs, integration remains non-trivial. Organizations must carefully weigh security, hosting costs, and time-to-value when vetting vendors.</p>
+                </div>
+
+                <!-- Interactive Toggles -->
+                <div class="flex flex-wrap gap-4 mb-8 bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                    <span class="font-semibold text-slate-700 self-center mr-2">Filter Priorities:</span>
+                    <button class="filter-btn active px-4 py-2 bg-brand-teal text-white rounded-full text-sm transition-colors focus:outline-none" data-filter="all">Show All</button>
+                    <button class="filter-btn px-4 py-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-full text-sm transition-colors focus:outline-none" data-filter="security">Focus: Security & Control</button>
+                    <button class="filter-btn px-4 py-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-full text-sm transition-colors focus:outline-none" data-filter="speed">Focus: Speed to Market</button>
+                </div>
+
+                <!-- Assessment Matrix -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="vendor-matrix">
+                    
+                    <div class="matrix-card p-6 bg-white border border-slate-200 rounded-xl shadow-sm" data-category="security">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-xl text-slate-900">Build (Self-Hosted LLM)</h3>
+                            <span class="bg-slate-100 text-slate-500 text-xs px-2 py-1 rounded font-mono">High Effort</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-slate-700 mb-6">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Absolute data privacy; documents never leave internal servers.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Highly tuned to specific firm policies.</li>
+                            <li class="flex items-start"><span class="text-red-500 mr-2">&#10007;</span> Significant upfront MLOps infrastructure costs.</li>
+                            <li class="flex items-start"><span class="text-red-500 mr-2">&#10007;</span> Integration with legacy UI is highly complex.</li>
+                        </ul>
+                    </div>
+
+                    <div class="matrix-card p-6 bg-white border border-slate-200 rounded-xl shadow-sm border-t-4 border-t-brand-teal" data-category="speed">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-xl text-slate-900">Buy (Enterprise SaaS)</h3>
+                            <span class="bg-brand-teal/10 text-brand-teal text-xs px-2 py-1 rounded font-mono">Recommended</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-slate-700 mb-6">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Immediate deployment and user access.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Vendor manages model updates and hardware scaling.</li>
+                            <li class="flex items-start"><span class="text-amber-500 mr-2">&#9888;</span> Requires rigorous legal review of data retention policies.</li>
+                            <li class="flex items-start"><span class="text-amber-500 mr-2">&#9888;</span> Generalized models may hallucinate on niche policies without RAG.</li>
+                        </ul>
+                    </div>
+
+                    <div class="matrix-card p-6 bg-white border border-slate-200 rounded-xl shadow-sm" data-category="speed">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-xl text-slate-900">Migrate (Stack Native)</h3>
+                            <span class="bg-slate-100 text-slate-500 text-xs px-2 py-1 rounded font-mono">Low Friction</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-slate-700 mb-6">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Utilize AI features already bundled in existing platforms (e.g. M365 Copilot).</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Zero new procurement cycles; leverages existing permissions.</li>
+                            <li class="flex items-start"><span class="text-red-500 mr-2">&#10007;</span> Locked into the existing vendor's innovation pace.</li>
+                            <li class="flex items-start"><span class="text-red-500 mr-2">&#10007;</span> Feature sets are often generic, not industry-specific.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Application Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Navigation State Management ---
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const sections = document.querySelectorAll('.view-section');
+
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Reset all nav buttons
+                    navButtons.forEach(b => {
+                        b.classList.remove('bg-brand-teal', 'text-white', 'shadow-md');
+                        b.classList.add('text-slate-300', 'hover:bg-slate-800');
+                    });
+                    
+                    // Activate clicked button
+                    btn.classList.add('bg-brand-teal', 'text-white', 'shadow-md');
+                    btn.classList.remove('text-slate-300', 'hover:bg-slate-800');
+
+                    // Switch views
+                    const targetId = btn.getAttribute('data-target');
+                    sections.forEach(sec => {
+                        if(sec.id === targetId) {
+                            sec.classList.add('active');
+                        } else {
+                            sec.classList.remove('active');
+                        }
+                    });
+                });
+            });
+
+            // --- Chart.js Implementations ---
+            
+            // Chart 1: Growth vs Operational Drag (Donut)
+            const ctxGrowth = document.getElementById('growthChart').getContext('2d');
+            new Chart(ctxGrowth, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Client Acquisition Growth', 'Legacy Workflow Drag', 'Compliance Overhead'],
+                    datasets: [{
+                        data: [55, 30, 15],
+                        backgroundColor: [
+                            '#0d9488', // brand-teal
+                            '#94a3b8', // slate-400
+                            '#d97706'  // brand-amber
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // MANDATORY for proper container constraints
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { family: 'Inter' } } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.raw + '% Impact';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Chart 2: Risk Frequency (Bar)
+            const ctxRisk = document.getElementById('riskChart').getContext('2d');
+            new Chart(ctxRisk, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'Missed Endorsements', 
+                        'False Summarizations', 
+                        'Data Siloing', 
+                        'Format Parsing Errors'
+                    ],
+                    datasets: [{
+                        label: 'Error Frequency Score (Internal Test)',
+                        data: [85, 62, 78, 45],
+                        backgroundColor: '#d97706', // brand-amber
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // MANDATORY for proper container constraints
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: 'Inter' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { 
+                                font: { family: 'Inter' },
+                                // Label wrapping logic (approx 16 chars)
+                                callback: function(value, index, values) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 16) {
+                                        const words = label.split(' ');
+                                        let lines = [];
+                                        let currentLine = '';
+                                        words.forEach(word => {
+                                            if ((currentLine + word).length > 16) {
+                                                lines.push(currentLine.trim());
+                                                currentLine = word + ' ';
+                                            } else {
+                                                currentLine += word + ' ';
+                                            }
+                                        });
+                                        lines.push(currentLine.trim());
+                                        return lines;
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { padding: 10 }
+                    }
+                }
+            });
+
+
+            // --- Interactive Strategy Element Logic ---
+            const strategyData = {
+                "1": {
+                    icon: "&#9873;",
+                    title: "Phase 1: Executive Alignment",
+                    text: "Before selecting software, the executive team must define the acceptable risk parameters and core objectives. Are we optimizing for cost reduction, revenue generation, or error reduction?",
+                    bullets: ["Establish data privacy boundaries.", "Define metrics for measuring experiment success.", "Commit to a change-management methodology."]
+                },
+                "2": {
+                    icon: "&#128101;",
+                    title: "Phase 2: User Advisory Groups",
+                    text: "IT cannot dictate workflow changes in a vacuum. Convene frontline staff (sales, wealth management, claims) to document the actual, not theoretical, bottlenecks in document processing.",
+                    bullets: ["Map existing manual processes.", "Identify tasks where chatbots fail but deterministic software succeeds.", "Select internal champions."]
+                },
+                "3": {
+                    icon: "&#9881;",
+                    title: "Phase 3: Targeted Proofs of Concept (PoC)",
+                    text: "Deploy solutions to limited groups based on the findings from Phase 2. Measure against the metrics defined in Phase 1 before broad organizational rollout.",
+                    bullets: ["Test document comparison vs generation tools.", "Evaluate vendor data retention in practice.", "Refine prompts based on edge cases."]
+                },
+                "4": {
+                    icon: "&#128218;",
+                    title: "Phase 4: Opt-In Training & Grassroots Adoption",
+                    text: "Forcing software adoption generates friction. Offer short webinars, asynchronous modules, and hands-on support for users who opt-in, letting success stories drive organic adoption.",
+                    bullets: ["Develop role-specific curriculum.", "Host 'office hours' for troubleshooting.", "Iterate based on continuous feedback."]
+                }
+            };
+
+            const strategyCards = document.querySelectorAll('.interactive-card');
+            const detailContainer = document.getElementById('strategy-detail-content');
+
+            strategyCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Update active styling
+                    strategyCards.forEach(c => {
+                        c.classList.remove('selected', 'border-brand-teal', 'bg-f0fdfa');
+                        c.classList.add('border-slate-200', 'bg-white');
+                        c.querySelector('span:last-child').classList.replace('text-brand-teal', 'text-slate-400');
+                    });
+                    card.classList.add('selected', 'border-brand-teal', 'bg-f0fdfa');
+                    card.classList.remove('border-slate-200', 'bg-white');
+                    card.querySelector('span:last-child').classList.replace('text-slate-400', 'text-brand-teal');
+
+                    // Update Content
+                    const phaseId = card.getAttribute('data-phase');
+                    const data = strategyData[phaseId];
+                    
+                    // Simple fade effect
+                    detailContainer.style.opacity = 0;
+                    setTimeout(() => {
+                        let bulletsHtml = data.bullets.map(b => `<li>${b}</li>`).join('');
+                        detailContainer.innerHTML = `
+                            <div class="text-brand-teal text-4xl mb-4">${data.icon}</div>
+                            <h3 class="text-2xl font-bold mb-4">${data.title}</h3>
+                            <p class="text-slate-300 leading-relaxed text-lg mb-4">${data.text}</p>
+                            <ul class="list-disc pl-5 text-slate-400 space-y-2">
+                                ${bulletsHtml}
+                            </ul>
+                        `;
+                        detailContainer.style.opacity = 1;
+                    }, 150);
+                });
+            });
+
+            // --- Vendor Assessment Filtering Logic ---
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const matrixCards = document.querySelectorAll('.matrix-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update Button styles
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-brand-teal', 'text-white', 'active');
+                        b.classList.add('bg-slate-100', 'text-slate-600');
+                    });
+                    btn.classList.add('bg-brand-teal', 'text-white', 'active');
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
+
+                    const filter = btn.getAttribute('data-filter');
+
+                    // Filter Cards
+                    matrixCards.forEach(card => {
+                        if (filter === 'all') {
+                            card.style.display = 'block';
+                            card.style.opacity = '1';
+                        } else {
+                            if (card.getAttribute('data-category') === filter || card.getAttribute('data-category') === 'all') {
+                                card.style.display = 'block';
+                                setTimeout(() => card.style.opacity = '1', 50);
+                            } else {
+                                card.style.opacity = '0';
+                                setTimeout(() => card.style.display = 'none', 300); // match transition duration if added to css
+                            }
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
