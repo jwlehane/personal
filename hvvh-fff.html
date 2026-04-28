@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food + Beverage Founder Peer Group Analytics</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+    background-color: #F8FAFC;
+    color: #1E293B;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+.timeline-dot {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    background-color: #4F46E5;
+    border: 4px solid #E0E7FF;
+    z-index: 10;
+}
+.timeline-line {
+    position: absolute;
+    top: 1.5rem;
+    bottom: -1.5rem;
+    left: 0.65rem;
+    width: 0.25rem;
+    background-color: #E0E7FF;
+    z-index: 0;
+}
+</style>
+</head>
+<body class="antialiased">
+
+<!-- 
+PLAN SUMMARY: 
+1. Hero/Intro: Sets the stage for the Mastermind event.
+2. Group KPI Overview: Big numbers representing the collective strength.
+3. Business Maturity (Years): Bar chart showing experience distribution.
+4. Scale & Capacity (Revenue/Team): Donut charts showing financial and personnel footprint.
+5. The Challenge Matrix: Horizontal bar categorizing the main hurdles to focus the discussion.
+6. Member Spotlights: Cards detailing each founder for context.
+7. Agenda: HTML/CSS timeline.
+
+CHART CHOICES:
+- Years in Business -> Bar Chart (Goal: Compare categories. Best for comparing values across distinct individuals). NO SVG used.
+- Revenue Scale -> Donut Chart (Goal: Show composition. Best for showing market share/revenue brackets). NO SVG used.
+- Team Size -> Donut Chart (Goal: Show composition. Best for highlighting team scale proportions). NO SVG used.
+- Core Challenges -> Horizontal Bar Chart (Goal: Organize/Rank. Best for reading longer category labels like "Capital & Funding"). NO SVG used.
+
+PALETTE: "Vibrant Dataviz" (Indigo #4F46E5, Emerald #10B981, Amber #F59E0B, Rose #E11D48, Cyan #06B6D4).
+CONFIRMATION: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    
+    <header class="text-center mb-16">
+        <div class="inline-block bg-indigo-100 text-indigo-800 px-4 py-1 rounded-full text-sm font-bold tracking-wide uppercase mb-4">&#x1F4CD; Keegan Ales, Kingston, NY</div>
+        <h1 class="text-5xl font-extrabold text-slate-900 tracking-tight mb-4">F&amp;B Founder Peer Group</h1>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto">An analytical overview of the attending visionary brands. This data informs our mastermind discussion, highlighting our collective experience, operational scale, and shared hurdles in the food and beverage industry.</p>
+    </header>
+
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">&#x1F31F; The Collective Power</h2>
+        <p class="text-slate-600 mb-6">Before diving into individual metrics, it is vital to recognize the aggregate strength of this peer group. The combined experience spans pre-revenue innovation to established, multi-million dollar manufacturing.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl shadow-md p-8 border-t-4 border-indigo-500 text-center flex flex-col justify-center items-center">
+                <span class="text-5xl mb-2">&#x1F553;</span>
+                <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider">Combined Experience</p>
+                <p class="text-4xl font-black text-indigo-600 mt-2">28.5 Years</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-8 border-t-4 border-emerald-500 text-center flex flex-col justify-center items-center">
+                <span class="text-5xl mb-2">&#x1F3E2;</span>
+                <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider">Companies Represented</p>
+                <p class="text-4xl font-black text-emerald-600 mt-2">5 Brands</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-md p-8 border-t-4 border-rose-500 text-center flex flex-col justify-center items-center">
+                <span class="text-5xl mb-2">&#x1F4B0;</span>
+                <p class="text-sm text-slate-500 font-semibold uppercase tracking-wider">Top Revenue Bracket</p>
+                <p class="text-4xl font-black text-rose-600 mt-2">$1M+</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center">&#x1F4CA; Business Maturity</h2>
+            <p class="text-sm text-slate-600 mb-6">This visualization highlights the longevity of each brand. We have a healthy mix of seasoned veterans (10+ years) who can offer historical market perspective, and newer founders (under 3 years) bringing fresh operational approaches.</p>
+            <div class="chart-container">
+                <canvas id="yearsChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center">&#x1F3AF; Shared Challenges Matrix</h2>
+            <p class="text-sm text-slate-600 mb-6">To structure today's discussion efficiently, we've categorized the primary hurdles reported by the group. Scaling operations/compliance and securing growth capital are tied as the most pressing issues across the table.</p>
+            <div class="chart-container">
+                <canvas id="challengesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center">&#x1F4B8; Revenue Distribution</h2>
+            <p class="text-sm text-slate-600 mb-6">Understanding the financial scale of our peers helps tailor advice. The group is heavily concentrated in the early-to-mid scaling phase ($100k - $250k), with one breakout brand exceeding $1M, providing a clear roadmap for scaling up.</p>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-bold text-slate-800 mb-2 flex items-center">&#x1F465; Team Size & Capacity</h2>
+            <p class="text-sm text-slate-600 mb-6">Team size is a direct indicator of operational complexity. The majority of our cohort operates lean (2-5 people), meaning automation, efficient processes, and smart outsourcing will be high-value discussion topics.</p>
+            <div class="chart-container">
+                <canvas id="teamChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+
+    <section class="mb-16">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">&#x1F4CB; Mastermind Agenda</h2>
+        <p class="text-slate-600 mb-8">Our 3-hour intensive is structured to maximize facility learning and peer-to-peer problem solving. Host Johnny LeHane will facilitate the flow.</p>
+        
+        <div class="bg-white rounded-xl shadow-md p-8">
+            <div class="relative pl-8 sm:pl-32 py-6 group">
+                <div class="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-200 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-4 after:h-4 after:bg-indigo-600 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+                    <time class="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-sm font-semibold uppercase w-20 h-6 mb-3 sm:mb-0 text-indigo-600 bg-indigo-100 rounded-full">12:00 PM</time>
+                    <div class="text-xl font-bold text-slate-900">Arrival & Mingling</div>
+                </div>
+                <div class="text-slate-600">Gather at Keegan Ales, grab a refreshment, and meet your fellow F&B founders.</div>
+            </div>
+
+            <div class="relative pl-8 sm:pl-32 py-6 group">
+                <div class="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-200 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-4 after:h-4 after:bg-emerald-500 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+                    <time class="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-sm font-semibold uppercase w-20 h-6 mb-3 sm:mb-0 text-emerald-600 bg-emerald-100 rounded-full">12:15 PM</time>
+                    <div class="text-xl font-bold text-slate-900">Venue Tour</div>
+                </div>
+                <div class="text-slate-600">Exclusive behind-the-scenes tour of the Keegan Ales operations with GM Lisa Hantes.</div>
+            </div>
+
+            <div class="relative pl-8 sm:pl-32 py-6 group">
+                <div class="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-200 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-4 after:h-4 after:bg-rose-500 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+                    <time class="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-sm font-semibold uppercase w-20 h-6 mb-3 sm:mb-0 text-rose-600 bg-rose-100 rounded-full">12:45 PM</time>
+                    <div class="text-xl font-bold text-slate-900">Lunch & Peer Discussion</div>
+                </div>
+                <div class="text-slate-600">Formal introductions followed by a deep-dive mastermind session to crowd-source solutions to current scaling, capital, and market challenges.</div>
+            </div>
+            
+            <div class="relative pl-8 sm:pl-32 py-6 group">
+                <div class="flex flex-col sm:flex-row items-start mb-1 group-last:before:hidden before:absolute before:left-2 sm:before:left-0 before:h-full before:px-px before:bg-slate-200 sm:before:ml-[6.5rem] before:self-start before:-translate-x-1/2 before:translate-y-3 after:absolute after:left-2 sm:after:left-0 after:w-4 after:h-4 after:bg-slate-400 after:border-4 after:box-content after:border-slate-50 after:rounded-full sm:after:ml-[6.5rem] after:-translate-x-1/2 after:translate-y-1.5">
+                    <time class="sm:absolute left-0 translate-y-0.5 inline-flex items-center justify-center text-sm font-semibold uppercase w-20 h-6 mb-3 sm:mb-0 text-slate-600 bg-slate-200 rounded-full">3:00 PM</time>
+                    <div class="text-xl font-bold text-slate-900">Wrap Up</div>
+                </div>
+                <div class="text-slate-600">Action items, accountability check-ins, and closing remarks.</div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center">&#x1F4BC; Attendee Spotlights</h2>
+        <p class="text-slate-600 mb-8">Detailed profiles of the core brands participating in today's mastermind to help facilitate targeted networking.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden flex flex-col">
+                <div class="bg-indigo-600 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Stacey Hawkins</h3>
+                    <p class="text-indigo-200 text-sm">Stacey Hawkins / Moxie Food Co.</p>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 mb-4 border-b border-slate-100 pb-4">Robust line of spices, seasonings, flavored oils, and cookbooks focused on healthy meals and Amazon DTC growth.</p>
+                        <div class="mb-2"><span class="font-semibold text-slate-800 text-sm">&#x1F3C6; Top Win:</span> <span class="text-sm text-slate-600">Record sales during COVID-19 pandemic.</span></div>
+                        <div><span class="font-semibold text-slate-800 text-sm">&#x1F527; Challenge:</span> <span class="text-sm text-slate-600">Crowded marketplace differentiation & securing funding.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden flex flex-col">
+                <div class="bg-emerald-600 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Kyle Sherrer</h3>
+                    <p class="text-emerald-200 text-sm">Hudson North / Graft Cider</p>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 mb-4 border-b border-slate-100 pb-4">Natural, wild-fermented sour ciders and craft beverages with a focus on long-term sustainability.</p>
+                        <div class="mb-2"><span class="font-semibold text-slate-800 text-sm">&#x1F3C6; Top Win:</span> <span class="text-sm text-slate-600">Grew to 2nd largest Hard Cidery in New York.</span></div>
+                        <div><span class="font-semibold text-slate-800 text-sm">&#x1F527; Challenge:</span> <span class="text-sm text-slate-600">Raising capital for LTV on expansion project.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden flex flex-col">
+                <div class="bg-amber-500 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Arif Khan</h3>
+                    <p class="text-amber-100 text-sm">Chikka Chikka</p>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 mb-4 border-b border-slate-100 pb-4">Modern, pocket-sized fennel seed digestive snack leveraging Ayurvedic traditions and NY ingredients.</p>
+                        <div class="mb-2"><span class="font-semibold text-slate-800 text-sm">&#x1F3C6; Top Win:</span> <span class="text-sm text-slate-600">Wirecutter rec driving 5k+ DTC orders in 2 months.</span></div>
+                        <div><span class="font-semibold text-slate-800 text-sm">&#x1F527; Challenge:</span> <span class="text-sm text-slate-600">Consumer education for a novel US category.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden flex flex-col">
+                <div class="bg-rose-600 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Christopher D'Amico</h3>
+                    <p class="text-rose-200 text-sm">M*STARD</p>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 mb-4 border-b border-slate-100 pb-4">Emerging food brand focusing on shelf-stable, high-quality mustard products.</p>
+                        <div class="mb-2"><span class="font-semibold text-slate-800 text-sm">&#x1F3C6; Top Win:</span> <span class="text-sm text-slate-600">Secured funding & completing 20-C commercial kitchen.</span></div>
+                        <div><span class="font-semibold text-slate-800 text-sm">&#x1F527; Challenge:</span> <span class="text-sm text-slate-600">Navigating complex food compliance and scaling process.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md border border-slate-100 overflow-hidden flex flex-col">
+                <div class="bg-cyan-600 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Florian Doumenc</h3>
+                    <p class="text-cyan-200 text-sm">SAE</p>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-600 mb-4 border-b border-slate-100 pb-4">Early-stage beverage company developing an innovative new sparkling water product.</p>
+                        <div class="mb-2"><span class="font-semibold text-slate-800 text-sm">&#x1F3C6; Top Win:</span> <span class="text-sm text-slate-600">Product development phase (Pre-revenue).</span></div>
+                        <div><span class="font-semibold text-slate-800 text-sm">&#x1F527; Challenge:</span> <span class="text-sm text-slate-600">Identifying optimal distribution models to go to market.</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-800 rounded-xl shadow-md border border-slate-700 overflow-hidden flex flex-col">
+                <div class="bg-slate-900 px-6 py-4">
+                    <h3 class="text-xl font-bold text-white">Lisa Hantes (Host)</h3>
+                    <p class="text-slate-400 text-sm">Keegan Ales</p>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <p class="text-sm text-slate-300 mb-4 border-b border-slate-700 pb-4">General Manager with deep F&B hospitality background, hosting our mastermind event.</p>
+                        <div class="mb-2"><span class="font-semibold text-slate-200 text-sm">&#x1F31F; Expertise:</span> <span class="text-sm text-slate-400">Fine dining, hotel projects, non-profit leadership.</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</div>
+
+<script>
+function wrapLabel(label, maxChars) {
+    if (label.length <= maxChars) return label;
+    let words = label.split(' ');
+    let lines = [];
+    let currentLine = '';
+
+    words.forEach(word => {
+        if ((currentLine + word).length > maxChars) {
+            if (currentLine.trim() !== '') {
+                lines.push(currentLine.trim());
+            }
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine.trim() !== '') {
+        lines.push(currentLine.trim());
+    }
+    return lines;
+}
+
+const commonTooltipOptions = {
+    plugins: {
+        tooltip: {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        },
+        legend: {
+            position: 'bottom',
+            labels: { font: { family: "'Segoe UI', Roboto, sans-serif" } }
+        }
+    },
+    maintainAspectRatio: false,
+    responsive: true
+};
+
+const rawFounders = ["Stacey Hawkins", "Kyle Sherrer", "Arif Khan", "Christopher D'Amico", "Florian Doumenc"];
+const wrappedFounderLabels = rawFounders.map(name => wrapLabel(name, 16));
+
+const ctxYears = document.getElementById('yearsChart').getContext('2d');
+new Chart(ctxYears, {
+    type: 'bar',
+    data: {
+        labels: wrappedFounderLabels,
+        datasets: [{
+            label: 'Years in Business',
+            data: [15, 10, 2, 1.5, 0],
+            backgroundColor: '#4F46E5',
+            borderRadius: 6
+        }]
+    },
+    options: {
+        ...commonTooltipOptions,
+        scales: {
+            y: { beginAtZero: true, grid: { color: '#F1F5F9' } },
+            x: { grid: { display: false } }
+        }
+    }
+});
+
+const ctxChallenges = document.getElementById('challengesChart').getContext('2d');
+new Chart(ctxChallenges, {
+    type: 'bar',
+    data: {
+        labels: ['Scale / Compliance', 'Capital & Funding', 'Market Education'],
+        datasets: [{
+            label: 'Founders Facing Challenge',
+            data: [2, 2, 2],
+            backgroundColor: ['#10B981', '#F59E0B', '#06B6D4'],
+            borderRadius: 6
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        ...commonTooltipOptions,
+        scales: {
+            x: { beginAtZero: true, max: 3, ticks: { stepSize: 1 }, grid: { color: '#F1F5F9' } },
+            y: { grid: { display: false } }
+        },
+        plugins: {
+            ...commonTooltipOptions.plugins,
+            legend: { display: false } 
+        }
+    }
+});
+
+const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+new Chart(ctxRevenue, {
+    type: 'doughnut',
+    data: {
+        labels: ['$1M+', '$100k - $250k', 'Under $100k', 'Pre-revenue'],
+        datasets: [{
+            data: [1, 2, 1, 1],
+            backgroundColor: ['#E11D48', '#4F46E5', '#10B981', '#94A3B8'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        ...commonTooltipOptions,
+        cutout: '65%'
+    }
+});
+
+const ctxTeam = document.getElementById('teamChart').getContext('2d');
+new Chart(ctxTeam, {
+    type: 'doughnut',
+    data: {
+        labels: ['15+ Employees', '2 - 5 Employees'],
+        datasets: [{
+            data: [1, 4],
+            backgroundColor: ['#06B6D4', '#F59E0B'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        ...commonTooltipOptions,
+        cutout: '65%'
+    }
+});
+</script>
+</body>
+</html>
